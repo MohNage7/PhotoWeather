@@ -1,0 +1,18 @@
+<resources>
+    <dimen name="activity_horizontal_margin">12.0dp</dimen>
+    <dimen name="activity_vertical_margin">12.0dp</dimen>
+    <dimen name="sp_20">15.0sp</dimen>
+    <dimen name="dp_16">12.0dp</dimen>
+    <dimen name="dp_32">24dp</dimen>
+    <dimen name="sp_18">13.5sp</dimen>
+    <dimen name="sp_14">10.5sp</dimen>
+    <dimen name="nav_profile_img_width">45.0dp</dimen>
+    <dimen name="nav_profile_img_height">45.0dp</dimen>
+    <dimen name="dp_2">1.5dp</dimen>
+    <dimen name="sp_16">12.0sp</dimen>
+    <dimen name="article_image_height">150.0dp</dimen>
+    <dimen name="dp_4">3.0dp</dimen>
+    <dimen name="dp_8">6dp</dimen>
+    <dimen name="img_width_no_data">150.0dp</dimen>
+    <dimen name="img_height_no_data">150.0dp</dimen>
+</resources>

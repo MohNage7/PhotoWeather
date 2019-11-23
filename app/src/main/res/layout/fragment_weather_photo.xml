@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/generateWeatherDataBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:onClick="@{(view) -> handler.onGenerateWeatherDataClicked(view)}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:text="@string/get_weather_data"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!-- Another viewGroup to be able to generate bitmap from       -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/shareWeatherPhotoBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:drawableEnd="@drawable/ic_share"
+            android:onClick="@{(view) -> handler.onShareClicked(view)}"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:text="@string/share"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/weatherPhotoLayout"
+            app:layout_constraintBottom_toTopOf="@id/shareWeatherPhotoBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/weatherPhotoIv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/transparent_scrim"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/locationNameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_16"
+                android:padding="@dimen/dp_16"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Fifth Settlement, Cairo" />
+
+            <TextView
+                android:id="@+id/tempStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Clear"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/colorPrimaryText"
+                app:layout_constraintEnd_toEndOf="@+id/temperature_status_iv"
+                app:layout_constraintStart_toStartOf="@+id/temperature_status_iv"
+                app:layout_constraintTop_toBottomOf="@id/temperature_status_iv" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_margin="@dimen/dp_16"
+                android:layout_height="60dp"
+                android:id="@+id/temperature_status_iv"
+                app:layout_constraintEnd_toEndOf="@+id/locationNameTv"
+                app:layout_constraintTop_toBottomOf="@+id/locationNameTv" />
+
+            <TextView
+                android:id="@+id/tempTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/sp_50"
+                android:layout_marginStart="@dimen/dp_16"
+                app:layout_constraintBottom_toBottomOf="@+id/temperature_status_iv"
+                app:layout_constraintStart_toStartOf="@+id/locationNameTv"
+                app:layout_constraintTop_toTopOf="@+id/temperature_status_iv"
+                tools:text="17" />
+
+            <TextView
+                android:id="@+id/minMaxTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintBottom_toBottomOf="@+id/tempStatusTv"
+                app:layout_constraintEnd_toEndOf="@+id/tempTv"
+                app:layout_constraintStart_toStartOf="@+id/tempTv"
+                app:layout_constraintTop_toBottomOf="@id/tempTv"
+                tools:text="20 / 15" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.mohnage7.weather.features.weatherphoto.view.callback.WeatherPhotoHandler" />
+    </data>
+</layout>
