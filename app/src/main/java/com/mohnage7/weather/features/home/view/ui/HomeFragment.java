@@ -32,7 +32,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.mohnage7.weather.features.share.ShareFragment.WEATHER_PHOTO_EXTRA;
+import static com.mohnage7.weather.features.share.ui.ShareFragment.WEATHER_PHOTO_EXTRA;
 import static com.mohnage7.weather.utils.PermissionManager.MULTIPLE_PERMISSION_REQUEST_CODE;
 
 public class HomeFragment extends Fragment implements OnWeatherPhotoClickListener, HomeHandler {

@@ -40,7 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.mohnage7.weather.features.share.ShareFragment.WEATHER_PHOTO_EXTRA;
+import static com.mohnage7.weather.features.share.ui.ShareFragment.WEATHER_PHOTO_EXTRA;
 import static com.mohnage7.weather.features.weatherphoto.view.ui.LocationManager.REQUEST_CHECK_SETTINGS;
 import static com.mohnage7.weather.utils.PermissionManager.LOCATION_PERMISSION_REQUEST_CODE;
 

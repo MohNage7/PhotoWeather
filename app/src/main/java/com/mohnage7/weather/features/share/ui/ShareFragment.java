@@ -1,4 +1,4 @@
-package com.mohnage7.weather.features.share;
+package com.mohnage7.weather.features.share.ui;
 
 
 import android.content.Context;
