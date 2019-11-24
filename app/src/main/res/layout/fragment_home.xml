@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{(view) -> handler.onNewPhotoClicked(view)}" />
+            android:onClick="@{() -> handler.onNewPhotoClicked()}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/weatherRecyclerView"

@@ -70,6 +70,7 @@ public class CustomCameraManager implements LifecycleObserver {
     private CameraInteractionListener cameraInteractionListener;
     private File imageFile;
     private Lifecycle lifecycle;
+    private boolean isPermissionPause;
 
 
     public CustomCameraManager(Context context,Lifecycle lifecycle ,UiProvider uiProvider,CameraInteractionListener cameraInteractionListener) {
@@ -235,13 +236,14 @@ public class CustomCameraManager implements LifecycleObserver {
 
     public void onPhotoCaptureClicked() {
         FileOutputStream outputPhoto = null;
-        animateShutter();
+        String errorMessage = null;
         try {
             imageFile =createImageFile(createImageGallery());
             outputPhoto = new FileOutputStream(imageFile);
             uiProvider.getTextureView().getBitmap()
                     .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto);
         } catch (Exception e) {
+            errorMessage = e.getLocalizedMessage();
             Log.e(TAG,e.getLocalizedMessage());
         } finally {
             try {
@@ -250,9 +252,13 @@ public class CustomCameraManager implements LifecycleObserver {
                 }
             } catch (IOException e) {
                 Log.e(TAG,e.getLocalizedMessage());
+                errorMessage = e.getLocalizedMessage();
             }
-            if (lifecycle.getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
+            if (lifecycle.getCurrentState().isAtLeast(Lifecycle.State.RESUMED) && imageFile != null) {
+                animateShutter();
                 cameraInteractionListener.onPhotoCaptureSuccess(imageFile);
+            } else {
+                cameraInteractionListener.onPhotoCaptureFailure(errorMessage);
             }
         }
     }
@@ -318,5 +324,9 @@ public class CustomCameraManager implements LifecycleObserver {
     public void onStop() {
         closeCamera();
         closeBackgroundThread();
+    }
+
+    public void setPermissionPause(boolean b) {
+        isPermissionPause = b;
     }
 }

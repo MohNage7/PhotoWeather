@@ -30,7 +30,7 @@ public class WeatherPhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_weather_photo, parent, false);
         binding.setOnClickListener(onWeatherPhotoClickListener);
-        return new MoviesViewHolder(binding);
+        return new WeatherPhotoViewHolder(binding);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class WeatherPhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    protected class MoviesViewHolder extends RecyclerView.ViewHolder {
-        MoviesViewHolder(@NonNull ItemWeatherPhotoBinding binding) {
+    protected class WeatherPhotoViewHolder extends RecyclerView.ViewHolder {
+        WeatherPhotoViewHolder(@NonNull ItemWeatherPhotoBinding binding) {
             super(binding.getRoot());
         }
     }

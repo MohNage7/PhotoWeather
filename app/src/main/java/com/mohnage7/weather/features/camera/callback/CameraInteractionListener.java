@@ -4,5 +4,5 @@ import java.io.File;
 
 public interface CameraInteractionListener {
     void onPhotoCaptureSuccess(File imageFile);
-    void onPhotoCaptureFailure();
+    void onPhotoCaptureFailure(String errorMessage);
 }

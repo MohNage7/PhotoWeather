@@ -1,7 +1,9 @@
 package com.mohnage7.weather.features.home.view.ui;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.mohnage7.weather.features.share.ShareFragment.WEATHER_PHOTO_EXTRA;
+import static com.mohnage7.weather.utils.PermissionManager.MULTIPLE_PERMISSION_REQUEST_CODE;
 
 public class HomeFragment extends Fragment implements OnWeatherPhotoClickListener, HomeHandler {
 
@@ -122,9 +125,13 @@ public class HomeFragment extends Fragment implements OnWeatherPhotoClickListene
 
 
     @Override
-    public void onNewPhotoClicked(View view) {
-        PermissionManager.checkCameraPermission(this);
-        mListener.navigate(R.id.action_homeFragment_to_cameraFragment, null);
+    public void onNewPhotoClicked() {
+        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        if (PermissionManager.isAllPermissionGranted(this, permissions)) {
+            mListener.navigate(R.id.action_homeFragment_to_cameraFragment, null);
+        } else {
+            PermissionManager.checkForPermissions(this, permissions);
+        }
     }
 
 
@@ -155,5 +162,22 @@ public class HomeFragment extends Fragment implements OnWeatherPhotoClickListene
     public void onDestroy() {
         super.onDestroy();
         disposable.dispose();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MULTIPLE_PERMISSION_REQUEST_CODE) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted.
+                onNewPhotoClicked();
+            } else {
+                // permission denied
+                PermissionManager.showApplicationSettingsDialog(getContext());
+            }
+        }
     }
 }

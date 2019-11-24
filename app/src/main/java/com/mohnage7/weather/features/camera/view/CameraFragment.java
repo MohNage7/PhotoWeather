@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,10 @@ public class CameraFragment extends Fragment implements CameraHandler, UiProvide
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initCamera();
+    }
+
+    private void initCamera() {
         customCameraManager = new CustomCameraManager(getContext(), getLifecycle(), this, this);
         // enable @CustomCameraManager to observe life cycle changes of @CameraFragment
         getLifecycle().addObserver(customCameraManager);
@@ -51,7 +56,7 @@ public class CameraFragment extends Fragment implements CameraHandler, UiProvide
 
 
     @Override
-    public void onPhotoCaptureClicked(View view) {
+    public void onPhotoCaptureClicked() {
         customCameraManager.onPhotoCaptureClicked();
     }
 
@@ -91,14 +96,23 @@ public class CameraFragment extends Fragment implements CameraHandler, UiProvide
 
     @Override
     public void onPhotoCaptureSuccess(File imageFile) {
-        Bundle bundle = new Bundle();
-        bundle.putString(PHOTO_EXTRA, imageFile.getPath());
-        mListener.navigate(R.id.action_cameraFragment_to_weatherFragment, bundle);
+        if (imageFile != null && imageFile.getPath() != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(PHOTO_EXTRA, imageFile.getPath());
+            mListener.navigate(R.id.action_cameraFragment_to_weatherFragment, bundle);
+        } else {
+            onPhotoCaptureFailure(null);
+        }
     }
 
 
     @Override
-    public void onPhotoCaptureFailure() {
-
+    public void onPhotoCaptureFailure(@Nullable String errorMessage) {
+        if (errorMessage == null || errorMessage.isEmpty()) {
+            Toast.makeText(getActivity(), getString(R.string.capture_failure), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
+
 }

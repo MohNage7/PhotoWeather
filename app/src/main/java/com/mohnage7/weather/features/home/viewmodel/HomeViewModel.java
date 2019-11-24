@@ -2,7 +2,7 @@ package com.mohnage7.weather.features.home.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
-import com.mohnage7.weather.MoviesApplication;
+import com.mohnage7.weather.WeatherPhotoApplication;
 import com.mohnage7.weather.features.home.di.component.DaggerHomeComponent;
 import com.mohnage7.weather.features.home.di.module.HomeModule;
 import com.mohnage7.weather.features.home.repository.HomeRepository;
@@ -23,7 +23,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         DaggerHomeComponent.builder()
-                .serviceComponent(MoviesApplication.getInstance().getServiceComponent())
+                .serviceComponent(WeatherPhotoApplication.getInstance().getServiceComponent())
                 .homeModule(new HomeModule())
                 .build()
                 .inject(this);

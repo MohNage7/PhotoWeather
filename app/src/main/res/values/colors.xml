@@ -5,6 +5,7 @@
     <color name="colorAccent">#f1bd18</color>
     <color name="palegreen">#98FB98</color>
     <color name="colorPrimaryText">@color/white</color>
+    <color name="colorSecondaryText">@color/grey</color>
     <color name="white">#ffffffff</color>
     <color name="transparent_25_white">#40FFFFFF</color>
     <color name="grey">#7d7d7d</color>

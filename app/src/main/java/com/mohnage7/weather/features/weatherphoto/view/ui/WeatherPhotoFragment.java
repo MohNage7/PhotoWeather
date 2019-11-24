@@ -1,8 +1,11 @@
 package com.mohnage7.weather.features.weatherphoto.view.ui;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.location.Location;
@@ -38,6 +41,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.mohnage7.weather.features.share.ShareFragment.WEATHER_PHOTO_EXTRA;
+import static com.mohnage7.weather.features.weatherphoto.view.ui.LocationManager.REQUEST_CHECK_SETTINGS;
+import static com.mohnage7.weather.utils.PermissionManager.LOCATION_PERMISSION_REQUEST_CODE;
 
 
 public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandler, LocationManagerInteraction {
@@ -63,6 +68,15 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         }
         activity = getActivity();
         listenToWeatherDataChanges();
+        initLocationManager();
+    }
+
+    private void initLocationManager() {
+        if (isLocationPermissionGranted()) {
+            locationManager = new LocationManager(getActivity(), this);
+        } else {
+            checkForLocationPermission();
+        }
     }
 
     private void listenToWeatherDataChanges() {
@@ -218,11 +232,15 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         super.onResume();
         mListener.setToolbarTitle(getString(R.string.generate_photo));
         setOverlayVisible(currentLocation != null);
-        if (PermissionManager.checkLocationPermission(this) && currentLocation == null) {
-            locationManager = new LocationManager(activity, this);
-        }
     }
 
+    private void checkForLocationPermission() {
+        PermissionManager.checkForPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PermissionManager.LOCATION_PERMISSION_REQUEST_CODE);
+    }
+
+    private boolean isLocationPermissionGranted() {
+        return PermissionManager.isPermissionGranted(this, Manifest.permission.ACCESS_FINE_LOCATION);
+    }
 
     @Override
     public void onPause() {
@@ -238,9 +256,11 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
 
     @Override
     public void onGenerateWeatherDataClicked(View view) {
-        if (PermissionManager.checkLocationPermission(this)) {
+        if (isLocationPermissionGranted()) {
             showLoading();
             locationManager.startLocationUpdates();
+        } else {
+            initLocationManager();
         }
     }
 
@@ -276,12 +296,44 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         }
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted.
+                initLocationManager();
+            } else {
+                // permission denied
+                PermissionManager.showApplicationSettingsDialog(getContext());
+            }
+        }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    Log.d(TAG, "User agreed to make required location settings changes.");
+                    if (locationManager != null)
+                        locationManager.startLocationUpdates();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Log.d(TAG, "User chose not to make required location settings changes.");
+                    hideLoading();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }

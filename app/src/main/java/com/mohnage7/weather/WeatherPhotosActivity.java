@@ -1,16 +1,20 @@
 package com.mohnage7.weather;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.mohnage7.weather.databinding.ActivityWeatherBinding;
+
+import java.util.List;
 
 public class WeatherPhotosActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -52,6 +56,15 @@ public class WeatherPhotosActivity extends AppCompatActivity implements OnFragme
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(resId, bundle);
         } catch (IllegalArgumentException e) {
             Log.e("Invalid Navigate", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

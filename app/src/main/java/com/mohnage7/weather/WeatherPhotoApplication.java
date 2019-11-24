@@ -3,12 +3,12 @@ package com.mohnage7.weather;
 import android.app.Application;
 
 
-public class MoviesApplication extends Application {
+public class WeatherPhotoApplication extends Application {
 
-    private static MoviesApplication instance;
+    private static WeatherPhotoApplication instance;
     ServiceComponent serviceComponent;
 
-    public static MoviesApplication getInstance() {
+    public static WeatherPhotoApplication getInstance() {
         return instance;
     }
 

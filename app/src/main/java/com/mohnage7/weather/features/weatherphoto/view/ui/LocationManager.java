@@ -1,9 +1,12 @@
 package com.mohnage7.weather.features.weatherphoto.view.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Looper;
 import android.util.Log;
+
+import androidx.annotation.RequiresPermission;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -23,7 +26,7 @@ public class LocationManager {
     /**
      * Used to prompt location settings dialog
      */
-    private static final int REQUEST_CHECK_SETTINGS = 2;
+    public static final int REQUEST_CHECK_SETTINGS = 2;
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
@@ -61,6 +64,7 @@ public class LocationManager {
     private final Activity activity;
     private LocationManagerInteraction locationManagerInteraction;
 
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public LocationManager(Activity activity, LocationManagerInteraction locationManagerInteraction) {
         this.activity = activity;
         this.locationManagerInteraction = locationManagerInteraction;

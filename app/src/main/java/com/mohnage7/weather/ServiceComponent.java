@@ -14,5 +14,5 @@ public interface ServiceComponent {
     RestApiService getRestApiService();
     WeatherDatabase getWeatherDataBase();
 
-    void inject(MoviesApplication moviesApplication);
+    void inject(WeatherPhotoApplication weatherPhotoApplication);
 }

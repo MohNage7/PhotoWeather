@@ -19,9 +19,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.mohnage7.weather.BuildConfig.BASE_URL;
-import static com.mohnage7.weather.utils.Constants.CONNECTION_TIMEOUT;
-import static com.mohnage7.weather.utils.Constants.READ_TIMEOUT;
-import static com.mohnage7.weather.utils.Constants.WRITE_TIMEOUT;
+import static com.mohnage7.weather.network.NetworkUtils.CONNECTION_TIMEOUT;
+import static com.mohnage7.weather.network.NetworkUtils.READ_TIMEOUT;
+import static com.mohnage7.weather.network.NetworkUtils.WRITE_TIMEOUT;
 
 @Module
 public class ServiceModule {

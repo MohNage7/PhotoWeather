@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import static com.mohnage7.weather.utils.Constants.CACHE_TIMEOUT;
+import static com.mohnage7.weather.network.NetworkUtils.CACHE_TIMEOUT;
+import static com.mohnage7.weather.network.NetworkUtils.isNetworkAvailable;
 
 public class WeatherPhotoRepository {
 
@@ -62,7 +63,7 @@ public class WeatherPhotoRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable WeatherModel data) {
-                return data == null || refreshRateLimiter.shouldFetch(locationId);
+                return data == null || refreshRateLimiter.shouldFetch(locationId) || !isNetworkAvailable();
             }
 
             @NonNull

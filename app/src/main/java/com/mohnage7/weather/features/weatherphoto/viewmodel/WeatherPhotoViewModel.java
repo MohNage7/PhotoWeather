@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.mohnage7.weather.MoviesApplication;
+import com.mohnage7.weather.WeatherPhotoApplication;
 import com.mohnage7.weather.features.weatherphoto.di.component.DaggerWeatherPhotoComponent;
 import com.mohnage7.weather.features.weatherphoto.di.module.WeatherPhotoModule;
 import com.mohnage7.weather.features.weatherphoto.repository.WeatherPhotoRepository;
@@ -27,8 +27,8 @@ public class WeatherPhotoViewModel extends ViewModel {
 
     public WeatherPhotoViewModel() {
         DaggerWeatherPhotoComponent.builder()
-                .serviceComponent(MoviesApplication.getInstance().getServiceComponent())
-                .weatherPhotoModule(new WeatherPhotoModule(MoviesApplication.getInstance()))
+                .serviceComponent(WeatherPhotoApplication.getInstance().getServiceComponent())
+                .weatherPhotoModule(new WeatherPhotoModule(WeatherPhotoApplication.getInstance()))
                 .build()
                 .inject(this);
 
