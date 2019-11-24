@@ -10,11 +10,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.mohnage7.weather.databinding.ActivityWeatherBinding;
-
-import java.util.List;
 
 public class WeatherPhotosActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -62,9 +61,10 @@ public class WeatherPhotosActivity extends AppCompatActivity implements OnFragme
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (Fragment fragment : fragments) {
-            fragment.onActivityResult(requestCode, resultCode, data);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+            fragment.onActivityResult(requestCode,resultCode,data);
         }
     }
 }
