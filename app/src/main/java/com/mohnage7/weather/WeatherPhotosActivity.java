@@ -1,6 +1,7 @@
 package com.mohnage7.weather;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +48,10 @@ public class WeatherPhotosActivity extends AppCompatActivity implements OnFragme
 
     @Override
     public void navigate(int resId, @Nullable Bundle bundle) {
-        Navigation.findNavController(this,R.id.nav_host_fragment).
-                navigate(resId,bundle);
+        try {
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(resId, bundle);
+        } catch (IllegalArgumentException e) {
+            Log.e("Invalid Navigate", e.getLocalizedMessage());
+        }
     }
 }

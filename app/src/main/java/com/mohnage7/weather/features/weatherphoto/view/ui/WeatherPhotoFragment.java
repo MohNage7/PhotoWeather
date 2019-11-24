@@ -51,6 +51,7 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
     private WeatherPhotoViewModel weatherPhotoViewModel;
     private Activity activity;
     private OnFragmentInteractionListener mListener;
+    private FileObserver observer;
 
 
     @Override
@@ -86,37 +87,43 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
     }
 
     private void handleWeatherData(WeatherModel weatherModel) {
-        Bitmap bitmap = generateWeatherDataOverTheImage(weatherModel);
-        // observe @photoPath file changes
-        observeFileChanges(photoPath);
-        // replace photo on disk.
-        replaceOriginalBitmapWithGeneratedBitmap(bitmap);
-        // insert into db.
-        weatherPhotoViewModel.saveWeatherPhoto(photoPath);
+        if (weatherModel != null) {
+            Bitmap bitmap = generateWeatherDataOverTheImage(weatherModel);
+            // observe @photoPath file changes
+            observeFileChanges(photoPath);
+            // replace photo on disk.
+            replaceOriginalBitmapWithGeneratedBitmap(bitmap);
+            // insert into db.
+            weatherPhotoViewModel.saveWeatherPhoto(photoPath);
+        }
     }
 
     /**
      * Set up a file observer to watch this directory on disk
      * this observer will be triggered multiple times with @{@link FileObserver.CREATE}}
-     * and @{@link FileObserver.MODIFY}}, we are interested only
+     * and @{@link FileObserver.MODIFY}, we are interested only
      * in @{@link FileObserver.CLOSE_WRITE}} which indicates that our file has been created and we can use it
      *
      * Navigate to share fragment @{@link FileObserver.CLOSE_WRITE}}event is triggered
      */
     private void observeFileChanges(String photoPath) {
-        FileObserver observer = new FileObserver(photoPath) {
-            @Override
-            public void onEvent(int event, String file) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    hideLoading();
-                    if (event == CLOSE_WRITE) {
-                        navigateToShareFragment(photoPath);
-                    }
-                });
-            }
-        };
+        if (observer == null) {
+            Log.d(TAG, "FileObserver Created");
+            observer = new FileObserver(photoPath) {
+                @Override
+                public void onEvent(int event, String file) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        hideLoading();
+                        if (event == CLOSE_WRITE) {
+                            navigateToShareFragment(photoPath);
+                        }
+                    });
+                }
+            };
+        }
         observer.startWatching(); //START OBSERVING
     }
+
 
     private void navigateToShareFragment(String photoPath) {
         Bundle bundle = new Bundle();
@@ -223,6 +230,9 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         if (locationManager != null) {
             locationManager.stopLocationUpdates();
         }
+        if (observer != null) {
+            observer.stopWatching();
+        }
     }
 
 
@@ -265,6 +275,7 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {

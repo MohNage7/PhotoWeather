@@ -93,7 +93,7 @@ public class WeatherPhotoRepository {
     }
 
     private String generateLocationId(Location location) {
-        return String.valueOf(location.getLatitude() + location.getLongitude());
+        return String.format("%s_%s", location.getLatitude(), location.getLongitude());
     }
 
     public void insertWeatherPhoto(String photoPath) {

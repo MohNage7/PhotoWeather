@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -33,9 +34,9 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.mohnage7.weather.R;
+import com.mohnage7.weather.features.camera.callback.CameraInteractionListener;
 import com.mohnage7.weather.features.camera.callback.UiProvider;
 import com.mohnage7.weather.features.camera.view.CameraFragment;
-import com.mohnage7.weather.features.camera.callback.CameraInteractionListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -206,7 +207,7 @@ public class CustomCameraManager implements LifecycleObserver {
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     if (streamConfigurationMap != null) {
-                        previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+                        previewSize = chooseOptimalSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class));
                         mCameraId = cameraId;
                     }
                 }
@@ -214,6 +215,22 @@ public class CustomCameraManager implements LifecycleObserver {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private Size chooseOptimalSize(Size[] outputSizes) {
+        double preferredRatio = Resources.getSystem().getDisplayMetrics().heightPixels / Resources.getSystem().getDisplayMetrics().widthPixels;
+        Size currentOptimalSize = outputSizes[0];
+        double currentOptimalRatio = currentOptimalSize.getWidth() / (double) currentOptimalSize.getHeight();
+        for (Size currentSize : outputSizes) {
+            double currentRatio = currentSize.getWidth() / (double) currentSize.getHeight();
+            if (Math.abs(preferredRatio - currentRatio) <
+                    Math.abs(preferredRatio - currentOptimalRatio)) {
+                currentOptimalSize = currentSize;
+                currentOptimalRatio = currentRatio;
+            }
+        }
+        return currentOptimalSize;
     }
 
     public void onPhotoCaptureClicked() {

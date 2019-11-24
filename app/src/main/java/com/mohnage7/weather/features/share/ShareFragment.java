@@ -19,6 +19,8 @@ import com.mohnage7.weather.OnFragmentInteractionListener;
 import com.mohnage7.weather.R;
 import com.mohnage7.weather.databinding.FragmentShareBinding;
 import com.mohnage7.weather.features.share.callback.ShareHandler;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,7 +55,11 @@ public class ShareFragment extends Fragment implements ShareHandler {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (weatherPhoto != null && !weatherPhoto.isEmpty()) {
-            Picasso.get().load(new File(weatherPhoto)).into(binding.weatherPhotoIv);
+            Picasso.get().
+                    load(new File(weatherPhoto)).
+                    networkPolicy(NetworkPolicy.NO_CACHE).
+                    memoryPolicy(MemoryPolicy.NO_CACHE).
+                    into(binding.weatherPhotoIv);
         }
     }
 
