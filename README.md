@@ -5,7 +5,7 @@
 ## Project Overview
 A Weather application based on openweathermap-api that let the users take a photo, add current weather information (e.g. place name, temperature, weather condition, …) as a banner overlay on top of the photo and finally, share it.
 
-* Capture new photo by built-in camera
+* Capture new photo by built-in camera using camera2
 * Save photo locally
 * Detect current location 
 * Request openweathermap-api to get current location weather data.
