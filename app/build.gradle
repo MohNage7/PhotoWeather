@@ -16,12 +16,12 @@ android {
         debug {
             buildConfigField "String", "BASE_URL", '"http://api.openweathermap.org/"'
             buildConfigField "String", "IMAGE_URL", '"http://openweathermap.org/img/wn/"'
-            buildConfigField "String", "API_KEY", '"7fbfc183a028a7ef4693080955a733eb"'
+            buildConfigField "String", "API_KEY", '""'
         }
         release {
             buildConfigField "String", "BASE_URL", '"http://api.openweathermap.org/"'
             buildConfigField "String", "IMAGE_URL", '"http://openweathermap.org/img/wn/"'
-            buildConfigField "String", "API_KEY", '"7fbfc183a028a7ef4693080955a733eb"'
+            buildConfigField "String", "API_KEY", '""'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -51,7 +51,6 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
