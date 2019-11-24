@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherPhoto</string>
+    <string name="app_name">Weather Photo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="movie_image">Movie Image</string>
@@ -7,8 +7,6 @@
     <string name="server_error">Server Error</string>
     <string name="no_data_available">No data available.</string>
     <string name="no_data_found">No movies has been found.</string>
-    <string name="poster">poster</string>
-    <string name="title">title</string>
     <string name="action_filter_by">Filter by</string>
     <string name="top_rated">Top Rated</string>
     <string name="popular">Popular</string>

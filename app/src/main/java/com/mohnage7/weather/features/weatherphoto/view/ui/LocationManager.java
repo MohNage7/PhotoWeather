@@ -2,7 +2,6 @@ package com.mohnage7.weather.features.weatherphoto.view.ui;
 
 import android.app.Activity;
 import android.content.IntentSender;
-import android.location.Location;
 import android.os.Looper;
 import android.util.Log;
 
@@ -22,10 +21,6 @@ import static com.google.android.gms.common.api.CommonStatusCodes.RESOLUTION_REQ
 public class LocationManager {
     private static final String TAG = "LocationManager";
     /**
-     * Used for location runtime permission
-     */
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    /**
      * Used to prompt location settings dialog
      */
     private static final int REQUEST_CHECK_SETTINGS = 2;
@@ -34,11 +29,6 @@ public class LocationManager {
      */
     //private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 300000; // 5 mints
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000; // 5 mints
-
-    /**
-     * This is the least distance required to update venues list.
-     */
-    private static final long MIN_REQUIRED_DISTANCE = 500; // 5 METERS
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -68,16 +58,12 @@ public class LocationManager {
      * Callback for Location events.
      */
     private LocationCallback mLocationCallback;
-    /**
-     * Represents a geographical location.
-     */
-    private Location mCurrentLocation;
     private final Activity activity;
     private LocationManagerInteraction locationManagerInteraction;
 
-    public LocationManager(Activity activity,LocationManagerInteraction locationManagerInteraction) {
+    public LocationManager(Activity activity, LocationManagerInteraction locationManagerInteraction) {
         this.activity = activity;
-        this.locationManagerInteraction= locationManagerInteraction;
+        this.locationManagerInteraction = locationManagerInteraction;
         setupLocationService();
     }
 
@@ -91,6 +77,7 @@ public class LocationManager {
         createLocationRequest();
         buildLocationSettingsRequest();
     }
+
     /**
      * Uses a {@link LocationSettingsRequest.Builder} to build
      * a {@link LocationSettingsRequest} that is used for checking
@@ -101,6 +88,7 @@ public class LocationManager {
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();
     }
+
     /**
      * Creates a callback for receiving location events.
      */
@@ -109,7 +97,7 @@ public class LocationManager {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-            locationManagerInteraction.onLocationRetrieved(locationResult.getLastLocation());
+                locationManagerInteraction.onLocationRetrieved(locationResult.getLastLocation());
             }
         };
     }
@@ -137,34 +125,36 @@ public class LocationManager {
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
                 .addOnSuccessListener(activity, locationSettingsResponse -> {
                     Log.d(TAG, "All location settings are satisfied.");
-                    //noinspection MissingPermission
                     mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                             mLocationCallback, Looper.myLooper());
                 })
                 .addOnFailureListener(activity, e -> {
                     int statusCode = ((ApiException) e).getStatusCode();
-                    switch (statusCode) {
-                        case RESOLUTION_REQUIRED:
-                            Log.d(TAG, "Location settings are not satisfied. Attempting to upgrade " +
-                                    "location settings ");
-                            try {
-                                // Show the dialog by calling startResolutionForResult(), and check the
-                                // result in onActivityResult().
-                                ResolvableApiException rae = (ResolvableApiException) e;
-                                rae.startResolutionForResult(activity, REQUEST_CHECK_SETTINGS);
-                            } catch (IntentSender.SendIntentException sie) {
-                                Log.d(TAG, "PendingIntent unable to execute request.");
-                            }
-                            break;
-                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            String errorMessage = "Location settings are inadequate, and cannot be " +
-                                    "fixed here. Fix in Settings.";
-                            Log.e(TAG, errorMessage);
-                            break;
-                        default:
-                            break;
-                    }
+                    handleStartLocationFailureCases((ResolvableApiException) e, statusCode);
                 });
+    }
+
+    private void handleStartLocationFailureCases(ResolvableApiException e, int statusCode) {
+        switch (statusCode) {
+            case RESOLUTION_REQUIRED:
+                Log.d(TAG, "Location settings are not satisfied. Attempting to upgrade " +
+                        "location settings ");
+                try {
+                    // Show the dialog by calling startResolutionForResult(), and check the
+                    // result in onActivityResult().
+                    e.startResolutionForResult(activity, REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException sie) {
+                    Log.d(TAG, "PendingIntent unable to execute request.");
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                String errorMessage = "Location settings are inadequate, and cannot be " +
+                        "fixed here. Fix in Settings.";
+                Log.e(TAG, errorMessage);
+                break;
+            default:
+                break;
+        }
     }
 
     /**

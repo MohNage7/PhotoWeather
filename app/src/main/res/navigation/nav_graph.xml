@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/homeFragment"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mohnage7.weather.features.home.view.ui.HomeFragment" >
+        android:name="com.mohnage7.weather.features.home.view.ui.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
-    </fragment>
-
-    <fragment android:id="@+id/cameraFragment"
-        android:name="com.mohnage7.weather.features.camera.view.CameraFragment">
         <action
-            android:id="@+id/action_cameraFragment_to_shareFragment"
+            android:id="@+id/action_homeFragment_to_shareFragment"
             app:destination="@id/shareFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
-    <fragment android:id="@+id/shareFragment"
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.mohnage7.weather.features.camera.view.CameraFragment">
+        <action
+            android:id="@+id/action_cameraFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weatherFragment"
         android:name="com.mohnage7.weather.features.weatherphoto.view.ui.WeatherPhotoFragment">
+        <action
+            android:id="@+id/action_weatherFragment_to_shareFragment"
+            app:destination="@id/shareFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.mohnage7.weather.features.share.ShareFragment">
+        <action
+            android:id="@+id/action_shareFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
 
     </fragment>
 </navigation>

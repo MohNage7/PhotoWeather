@@ -2,6 +2,7 @@ package com.mohnage7.weather;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -42,5 +43,11 @@ public class WeatherPhotosActivity extends AppCompatActivity implements OnFragme
     @Override
     public void setToolbarTitle(String title) {
         binding.toolbar.setTitle(title);
+    }
+
+    @Override
+    public void navigate(int resId, @Nullable Bundle bundle) {
+        Navigation.findNavController(this,R.id.nav_host_fragment).
+                navigate(resId,bundle);
     }
 }

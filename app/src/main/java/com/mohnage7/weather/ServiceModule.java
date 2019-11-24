@@ -1,4 +1,4 @@
-package com.mohnage7.weather.di.module;
+package com.mohnage7.weather;
 
 import android.app.Application;
 

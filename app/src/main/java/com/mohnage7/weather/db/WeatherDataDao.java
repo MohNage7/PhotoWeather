@@ -5,8 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.mohnage7.weather.model.Movie;
-import com.mohnage7.weather.model.WeatherInfo;
 import com.mohnage7.weather.model.WeatherModel;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
-public interface WeatherDao {
+public interface WeatherDataDao {
     @Insert(onConflict = REPLACE)
     void insert(WeatherModel weatherInfo);
 

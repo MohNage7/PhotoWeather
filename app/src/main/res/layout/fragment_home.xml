@@ -32,36 +32,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/noDataLayout"
-            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/no_data_iv"
-                android:layout_width="@dimen/img_width_no_data"
-                android:layout_height="@dimen/img_height_no_data"
-                android:src="@drawable/ic_no_data"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <include
+            android:id="@+id/loadingLayout"
+            layout="@layout/layout_loading"/>
 
-            <TextView
-                android:id="@+id/noDataTxtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/no_data_iv"
-                android:padding="@dimen/dp_16"
-                android:text="@string/no_data_available"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/sp_18"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/no_data_iv" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <include
+            android:id="@+id/emptyLayout"
+            layout="@layout/layout_empty"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

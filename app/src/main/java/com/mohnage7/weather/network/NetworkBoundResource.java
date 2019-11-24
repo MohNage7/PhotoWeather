@@ -7,9 +7,8 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.mohnage7.weather.network.ApiResponse;
-import com.mohnage7.weather.base.DataWrapper;
 import com.mohnage7.weather.db.AppExecutors;
+import com.mohnage7.weather.model.DataWrapper;
 
 // ResultType: Type for the DataWrapper data. (database cache)
 // RequestType: Type for the API response. (network request)

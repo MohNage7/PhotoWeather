@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<data>
+    <variable
+        name="weatherPhoto"
+        type="com.mohnage7.weather.model.WeatherPhoto" />
+    <variable
+        name="onClickListener"
+        type="com.mohnage7.weather.features.weatherphoto.view.callback.OnWeatherPhotoClickListener" />
+</data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_4"
+        android:onClick="@{(View)-> onClickListener.onWeatherPhotoClick(weatherPhoto.photoPath)}"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dp_4"
+        app:cardElevation="@dimen/dp_4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_8">
+
+            <ImageView
+                android:id="@+id/weatherPhotoIv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/movie_image"
+                android:scaleType="centerCrop"
+                app:displayPhoto="@{weatherPhoto.photoPath}"
+                android:transitionName="@string/weather_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weatherPhotoTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:lines="2"
+                android:maxLines="2"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_20"
+                android:gravity="center_vertical"
+                 tools:text="Test Image"
+                android:text="@{weatherPhoto.name}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/weatherPhotoIv"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

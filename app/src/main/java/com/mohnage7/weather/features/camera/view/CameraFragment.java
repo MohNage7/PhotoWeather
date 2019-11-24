@@ -11,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
+import com.mohnage7.weather.OnFragmentInteractionListener;
 import com.mohnage7.weather.R;
 import com.mohnage7.weather.databinding.FragmentCameraBinding;
 import com.mohnage7.weather.features.camera.CustomCameraManager;
 import com.mohnage7.weather.features.camera.callback.CameraHandler;
-import com.mohnage7.weather.OnFragmentInteractionListener;
 import com.mohnage7.weather.features.camera.callback.CameraInteractionListener;
 import com.mohnage7.weather.features.camera.callback.UiProvider;
 
@@ -45,7 +44,7 @@ public class CameraFragment extends Fragment implements CameraHandler, UiProvide
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        customCameraManager = new CustomCameraManager(getContext(),getLifecycle(),this ,this);
+        customCameraManager = new CustomCameraManager(getContext(), getLifecycle(), this, this);
         // enable @CustomCameraManager to observe life cycle changes of @CameraFragment
         getLifecycle().addObserver(customCameraManager);
     }
@@ -93,10 +92,10 @@ public class CameraFragment extends Fragment implements CameraHandler, UiProvide
     @Override
     public void onPhotoCaptureSuccess(File imageFile) {
         Bundle bundle = new Bundle();
-        bundle.putString(PHOTO_EXTRA,imageFile.getPath());
-        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).
-                navigate(R.id.action_cameraFragment_to_shareFragment,bundle);
+        bundle.putString(PHOTO_EXTRA, imageFile.getPath());
+        mListener.navigate(R.id.action_cameraFragment_to_weatherFragment, bundle);
     }
+
 
     @Override
     public void onPhotoCaptureFailure() {

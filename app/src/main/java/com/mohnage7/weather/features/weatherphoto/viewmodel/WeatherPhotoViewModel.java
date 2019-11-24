@@ -8,10 +8,10 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.mohnage7.weather.MoviesApplication;
-import com.mohnage7.weather.base.DataWrapper;
 import com.mohnage7.weather.features.weatherphoto.di.component.DaggerWeatherPhotoComponent;
 import com.mohnage7.weather.features.weatherphoto.di.module.WeatherPhotoModule;
 import com.mohnage7.weather.features.weatherphoto.repository.WeatherPhotoRepository;
+import com.mohnage7.weather.model.DataWrapper;
 import com.mohnage7.weather.model.WeatherModel;
 
 import javax.inject.Inject;
@@ -46,7 +46,7 @@ public class WeatherPhotoViewModel extends ViewModel {
         locationMutableLiveData.setValue(location);
     }
 
-    public void saveImage(String photoPath) {
-        repository.insertImage(photoPath);
+    public void saveWeatherPhoto(String photoPath) {
+        repository.insertWeatherPhoto(photoPath);
     }
 }

@@ -1,18 +1,18 @@
 package com.mohnage7.weather.features.home.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.mohnage7.weather.MoviesApplication;
-import com.mohnage7.weather.base.DataWrapper;
-import com.mohnage7.weather.model.Movie;
+import com.mohnage7.weather.features.home.di.component.DaggerHomeComponent;
+import com.mohnage7.weather.features.home.di.module.HomeModule;
 import com.mohnage7.weather.features.home.repository.HomeRepository;
+import com.mohnage7.weather.model.WeatherPhoto;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 
 public class HomeViewModel extends ViewModel {
@@ -20,20 +20,18 @@ public class HomeViewModel extends ViewModel {
     @Inject
     HomeRepository repository;
 
-    private MutableLiveData<String> category = new MutableLiveData<>();
-    private LiveData<DataWrapper<List<Movie>>> moviesList;
 
     public HomeViewModel() {
-       // MoviesApplication.getInstance().getServiceComponent().inject(this);
-        moviesList = Transformations.switchMap(category, category -> repository.getMovies(category));
+        DaggerHomeComponent.builder()
+                .serviceComponent(MoviesApplication.getInstance().getServiceComponent())
+                .homeModule(new HomeModule())
+                .build()
+                .inject(this);
+     }
+
+    public Observable<List<WeatherPhoto>> getWeatherPhotoList() {
+        return repository.getWeatherPhotoList();
     }
 
-    public LiveData<DataWrapper<List<Movie>>> getMoviesList() {
-        return moviesList;
-    }
-
-    public void setFilterMovieBy(String filter) {
-        category.setValue(filter);
-    }
 
 }

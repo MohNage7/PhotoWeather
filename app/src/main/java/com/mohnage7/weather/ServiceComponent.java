@@ -1,9 +1,7 @@
-package com.mohnage7.weather.di.component;
+package com.mohnage7.weather;
 
 
-import com.mohnage7.weather.MoviesApplication;
 import com.mohnage7.weather.db.WeatherDatabase;
-import com.mohnage7.weather.di.module.ServiceModule;
 import com.mohnage7.weather.network.RestApiService;
 
 import javax.inject.Singleton;

@@ -6,10 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.mohnage7.weather.model.Movie;
 import com.mohnage7.weather.model.WeatherModel;
+import com.mohnage7.weather.model.WeatherPhoto;
 
-@Database(entities = {WeatherModel.class}, version = 1, exportSchema = false)
+@Database(entities = {WeatherModel.class,WeatherPhoto.class}, version = 1, exportSchema = false)
 public abstract class WeatherDatabase extends RoomDatabase {
 
     private static final String DATA_BASE_NAME = "weather_db";
@@ -28,5 +28,7 @@ public abstract class WeatherDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract WeatherDao getWeatherDao();
+    public abstract WeatherDataDao getWeatherDataDao();
+    public abstract WeatherPhotoDao getWeatherPhotoDao();
+
 }

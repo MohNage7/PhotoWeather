@@ -55,6 +55,10 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+    // rx
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
     // fragment navigation
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'

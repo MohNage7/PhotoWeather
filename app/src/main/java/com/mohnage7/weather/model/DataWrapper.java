@@ -1,4 +1,4 @@
-package com.mohnage7.weather.base;
+package com.mohnage7.weather.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

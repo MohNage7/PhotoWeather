@@ -3,12 +3,13 @@ package com.mohnage7.weather.features.weatherphoto.view.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.FileObserver;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,11 +37,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.mohnage7.weather.features.share.ShareFragment.WEATHER_PHOTO_EXTRA;
+
 
 public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandler, LocationManagerInteraction {
 
     public static final String PHOTO_EXTRA = "photo";
-    private static final String IMAGE_TYPE = "image/*";
     private static final String TAG = WeatherPhotoFragment.class.getSimpleName();
     private String photoPath;
     private FragmentWeatherPhotoBinding binding;
@@ -76,10 +77,7 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
                     showErrorMessage(dataWrapper.message);
                     break;
                 case SUCCESS:
-                    hideLoading();
-                    generateWeatherDataOverTheImage(dataWrapper.data);
-                    setShareButtonVisible(true);
-                    changeToolbarTitle();
+                    handleWeatherData(dataWrapper.data);
                     break;
                 default:
                     break;
@@ -87,14 +85,63 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         });
     }
 
-    private void generateWeatherDataOverTheImage(WeatherModel weatherModel) {
+    private void handleWeatherData(WeatherModel weatherModel) {
+        Bitmap bitmap = generateWeatherDataOverTheImage(weatherModel);
+        // observe @photoPath file changes
+        observeFileChanges(photoPath);
+        // replace photo on disk.
+        replaceOriginalBitmapWithGeneratedBitmap(bitmap);
+        // insert into db.
+        weatherPhotoViewModel.saveWeatherPhoto(photoPath);
+    }
+
+    /**
+     * Set up a file observer to watch this directory on disk
+     * this observer will be triggered multiple times with @{@link FileObserver.CREATE}}
+     * and @{@link FileObserver.MODIFY}}, we are interested only
+     * in @{@link FileObserver.CLOSE_WRITE}} which indicates that our file has been created and we can use it
+     *
+     * Navigate to share fragment @{@link FileObserver.CLOSE_WRITE}}event is triggered
+     */
+    private void observeFileChanges(String photoPath) {
+        FileObserver observer = new FileObserver(photoPath) {
+            @Override
+            public void onEvent(int event, String file) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    hideLoading();
+                    if (event == CLOSE_WRITE) {
+                        navigateToShareFragment(photoPath);
+                    }
+                });
+            }
+        };
+        observer.startWatching(); //START OBSERVING
+    }
+
+    private void navigateToShareFragment(String photoPath) {
+        Bundle bundle = new Bundle();
+        bundle.putString(WEATHER_PHOTO_EXTRA, photoPath);
+        mListener.navigate(R.id.action_weatherFragment_to_shareFragment, bundle);
+    }
+
+    /**
+     * this method sets all required views over the image and then convert the ViewGroup to bitmap.
+     *
+     * @param weatherModel data that will be displayed in the views
+     * @return generated bitmap that holds Weather Photo with Weather Data overlays it.
+     */
+    private Bitmap generateWeatherDataOverTheImage(WeatherModel weatherModel) {
+        setViews(weatherModel);
+        return convertViewToBitmap(binding.weatherPhotoLayout);
+    }
+
+    private void setViews(WeatherModel weatherModel) {
         binding.locationNameTv.setText(String.format("%s, %s", weatherModel.getName(), weatherModel.getCountryName()));
         binding.tempStatusTv.setText(weatherModel.getTempStatus());
         binding.tempTv.setText(String.format("%s°", String.valueOf(weatherModel.getTemp())));
         binding.minMaxTv.setText(String.format("%s ° / %s °", weatherModel.getMaxTemp(), weatherModel.getMinTemp()));
         Picasso.get().load(weatherModel.getTempIconURL()).into(binding.temperatureStatusIv);
-        Bitmap bitmap = convertViewToBitmap(binding.weatherPhotoLayout);
-        replaceOriginalBitmapWithGeneratedBitmap(bitmap);
+        setOverlayVisible(true);
     }
 
     private Bitmap convertViewToBitmap(ConstraintLayout v) {
@@ -116,23 +163,27 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
             } catch (IOException e) {
                 Log.e(TAG, e.getLocalizedMessage());
             }
-        }
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(newModifiedCapturedImage);
-            newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, e.getLocalizedMessage());
-        } finally {
-            if (outputStream != null) {
-                try {
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    Log.e(TAG, e.getLocalizedMessage());
+        } else {
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(newModifiedCapturedImage);
+                newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, e.getLocalizedMessage());
+            } finally {
+                if (outputStream != null) {
+                    try {
+                        outputStream.flush();
+                        outputStream.getFD().sync();
+                        outputStream.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getLocalizedMessage());
+                    }
                 }
+
             }
         }
+
     }
 
     private void showErrorMessage(String message) {
@@ -158,15 +209,11 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
     @Override
     public void onResume() {
         super.onResume();
-        changeToolbarTitle();
-        setShareButtonVisible(currentLocation != null);
+        mListener.setToolbarTitle(getString(R.string.generate_photo));
+        setOverlayVisible(currentLocation != null);
         if (PermissionManager.checkLocationPermission(this) && currentLocation == null) {
             locationManager = new LocationManager(activity, this);
         }
-    }
-
-    private void changeToolbarTitle() {
-        mListener.setToolbarTitle(currentLocation == null ? getString(R.string.generate_photo) : getString(R.string.share_photo));
     }
 
 
@@ -178,22 +225,6 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
         }
     }
 
-    @Override
-    public void onShareClicked(View view) {
-        shareImage(photoPath);
-    }
-
-    private void shareImage(String photoPath) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(IMAGE_TYPE);
-        File photoFile = new File(photoPath);
-        Uri myPhotoFileUri = FileProvider.getUriForFile(activity,
-                activity.getApplicationContext().getPackageName()
-                        + ".provider", photoFile);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.putExtra(Intent.EXTRA_STREAM, myPhotoFileUri);
-        startActivity(Intent.createChooser(intent, "Share with..."));
-    }
 
     @Override
     public void onGenerateWeatherDataClicked(View view) {
@@ -206,21 +237,14 @@ public class WeatherPhotoFragment extends Fragment implements WeatherPhotoHandle
     @Override
     public void onLocationRetrieved(Location location) {
         currentLocation = location;
-        hideLoading();
         // we don't need more location update. so we should stop it.
         locationManager.stopLocationUpdates();
         // get location data from server by lat/long
         weatherPhotoViewModel.setLocation(location);
     }
 
-    private void setShareButtonVisible(boolean visible) {
-        if (visible) {
-            binding.shareWeatherPhotoBtn.setVisibility(View.VISIBLE);
-            binding.generateWeatherDataBtn.setVisibility(View.INVISIBLE);
-        } else {
-            binding.shareWeatherPhotoBtn.setVisibility(View.INVISIBLE);
-            binding.generateWeatherDataBtn.setVisibility(View.VISIBLE);
-        }
+    private void setOverlayVisible(boolean visible) {
+        binding.overlay.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     private void showLoading() {

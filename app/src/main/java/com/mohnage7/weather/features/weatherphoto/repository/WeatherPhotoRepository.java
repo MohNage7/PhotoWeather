@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import com.mohnage7.weather.base.DataWrapper;
 import com.mohnage7.weather.db.AppExecutors;
-import com.mohnage7.weather.db.WeatherDao;
+import com.mohnage7.weather.db.WeatherDataDao;
 import com.mohnage7.weather.db.WeatherDatabase;
+import com.mohnage7.weather.db.WeatherPhotoDao;
+import com.mohnage7.weather.model.DataWrapper;
 import com.mohnage7.weather.model.WeatherInfo;
 import com.mohnage7.weather.model.WeatherModel;
+import com.mohnage7.weather.model.WeatherPhoto;
 import com.mohnage7.weather.network.ApiResponse;
 import com.mohnage7.weather.network.NetworkBoundResource;
 import com.mohnage7.weather.network.RestApiService;
@@ -27,20 +29,24 @@ public class WeatherPhotoRepository {
 
     private final AppExecutors appExecutors;
     private RestApiService apiService;
-    private WeatherDao weatherDao;
+    private WeatherDataDao weatherDataDao;
+    private WeatherPhotoDao weatherPhotoDao;
     private RefreshRateLimiter refreshRateLimiter;
+    private static final String IMAGE_FORMAT = ".jpg";
 
 
     @Inject
     public WeatherPhotoRepository(RestApiService apiService, WeatherDatabase weatherDatabase, AppExecutors appExecutors) {
         this.apiService = apiService;
         this.appExecutors = appExecutors;
-        weatherDao = weatherDatabase.getWeatherDao();
+        weatherDataDao = weatherDatabase.getWeatherDataDao();
+        weatherPhotoDao = weatherDatabase.getWeatherPhotoDao();
         refreshRateLimiter = new RefreshRateLimiter(TimeUnit.MINUTES, CACHE_TIMEOUT);
     }
 
     /**
      * Depend on cache if there's a request from same lat/long in 2 mints
+     *
      * @param location use it's lat/long to get weather data from OpenWeather API
      * @return WeatherModel attached with status to the view.
      */
@@ -51,7 +57,7 @@ public class WeatherPhotoRepository {
             @Override
             protected void saveCallResult(@NonNull WeatherInfo item) {
                 WeatherModel weatherModel = getWeatherModel(item, locationId);
-                weatherDao.insert(weatherModel);
+                weatherDataDao.insert(weatherModel);
             }
 
             @Override
@@ -62,7 +68,7 @@ public class WeatherPhotoRepository {
             @NonNull
             @Override
             protected LiveData<WeatherModel> loadFromDb() {
-                return weatherDao.getWeatherData(locationId);
+                return weatherDataDao.getWeatherData(locationId);
             }
 
             @NonNull
@@ -90,7 +96,18 @@ public class WeatherPhotoRepository {
         return String.valueOf(location.getLatitude() + location.getLongitude());
     }
 
-    public void insertImage(String photoPath) {
-        //weatherDao.insert();
+    public void insertWeatherPhoto(String photoPath) {
+        appExecutors.diskIO().execute(() -> {
+            String photoName = getPhotoName(photoPath);
+            WeatherPhoto weatherPhoto = new WeatherPhoto(photoName, photoPath);
+            weatherPhotoDao.insert(weatherPhoto);
+        });
+    }
+
+    private String getPhotoName(String photoPath) {
+        String name = photoPath.replace(IMAGE_FORMAT, "");
+        String[] arr = name.split("_");
+        name = arr[1] + "_" + arr[2];
+        return name;
     }
 }
