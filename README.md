@@ -6,7 +6,7 @@
 
 Capture , Generate , Share. And check your history.
 
-<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-122956.png"  width="241" height="500" /> <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123708.png"   width="241" height="500" />
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-132317.gif"  width="241" height="500" /><img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-122956.png"  width="241" height="500" /> <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123708.png"   width="241" height="500" />
 <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-125029.png"  width="241" height="500" /><img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123221.png"  width="241" height="500" />
 <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123510.png"  width="241" height="500" />
 
