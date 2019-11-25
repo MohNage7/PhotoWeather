@@ -2,6 +2,15 @@
 
 # PhotoWeather
 
+## Preview 
+
+Capture , Generate , Share. And check your history.
+
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-122956.png"  width="241" height="500" /> <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123708.png"   width="241" height="500" />
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-125029.png"  width="241" height="500" /><img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123221.png"  width="241" height="500" />
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123510.png"  width="241" height="500" />
+
+
 ## Project Overview
 A Weather application based on openweathermap-api that let the users take a photo, add current weather information (e.g. place name, temperature, weather condition, …) as a banner overlay on top of the photo and finally, share it.
 
