@@ -2,6 +2,15 @@
 
 # PhotoWeather
 
+## Preview 
+
+Capture , Generate , Share. And check your history.
+
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-122956.png"  width="241" height="500" /> <img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123708.png"   width="241" height="500" />
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-125029.png"  width="241" height="500" /><img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123221.png"  width="241" height="500" />
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/device-2019-11-25-123510.png"  width="241" height="500" />
+
+
 ## Project Overview
 A Weather application based on openweathermap-api that let the users take a photo, add current weather information (e.g. place name, temperature, weather condition, …) as a banner overlay on top of the photo and finally, share it.
 
@@ -11,6 +20,17 @@ A Weather application based on openweathermap-api that let the users take a phot
 * Request openweathermap-api to get current location weather data.
 * Set retrieved data in views and then convert all the ViewGroup to image.
 * Share the generated image accross applications.
+
+
+## NetworkBoundResource
+A helper class that is used to take the decision of loading the data from the local db or from remote service.
+
+The following diagram shows the decision tree for NetworkBoundResource:
+
+
+<img src="https://github.com/MohNage7/SimpleMovies/blob/master/images/network-bound-resource.png"  width=400 height=324  />
+
+NetworkBoundResource is using the local db as it's single source of truth.For example It starts by observing the database for Weather data. When the entry is loaded from the database for the first time, NetworkBoundResource checks whether the result is good enough to be dispatched or that it should be re-fetched from the network.
 
 
 ## Libraries 
