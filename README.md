@@ -22,6 +22,17 @@ A Weather application based on openweathermap-api that let the users take a phot
 * Share the generated image accross applications.
 
 
+## NetworkBoundResource
+A helper class that is used to take the decision of loading the data from the local db or from remote service.
+
+The following diagram shows the decision tree for NetworkBoundResource:
+
+
+<img src="https://github.com/MohNage7/SimpleMovies/blob/master/images/network-bound-resource.png"  width=400 height=324  />
+
+NetworkBoundResource is using the local db as it's single source of truth.For example It starts by observing the database for Weather data. When the entry is loaded from the database for the first time, NetworkBoundResource checks whether the result is good enough to be dispatched or that it should be re-fetched from the network.
+
+
 ## Libraries 
 * [Retrofit](https://square.github.io/retrofit/) for consuming REST APIs
 * [Dagger2](https://github.com/google/dagger) for dependency injection 
