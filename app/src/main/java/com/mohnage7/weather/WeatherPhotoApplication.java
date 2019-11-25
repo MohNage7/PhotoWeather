@@ -2,6 +2,10 @@ package com.mohnage7.weather;
 
 import android.app.Application;
 
+import com.mohnage7.weather.di.DaggerServiceComponent;
+import com.mohnage7.weather.di.ServiceComponent;
+import com.mohnage7.weather.di.ServiceModule;
+
 
 public class WeatherPhotoApplication extends Application {
 

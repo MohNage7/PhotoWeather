@@ -17,7 +17,7 @@
     <string name="play">Play Button</string>
     <string name="videos">Videos</string>
     <string name="hint_search">Search in movies…</string>
-    <string name="generate_photo">Generate Photo</string>
+    <string name="new_photo">New Photo</string>
     <string name="share_photo">Share Photo</string>
     <string name="permission_dialog_title">Permission required</string>
     <string name="share">Share</string>

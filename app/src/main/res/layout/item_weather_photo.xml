@@ -5,10 +5,10 @@
 <data>
     <variable
         name="weatherPhoto"
-        type="com.mohnage7.weather.model.WeatherPhoto" />
+        type="com.mohnage7.weather.data.model.WeatherPhoto" />
     <variable
         name="onClickListener"
-        type="com.mohnage7.weather.features.weatherphoto.view.callback.OnWeatherPhotoClickListener" />
+        type="com.mohnage7.weather.ui.weatherphoto.view.callback.OnWeatherPhotoClickListener" />
 </data>
 
     <androidx.cardview.widget.CardView

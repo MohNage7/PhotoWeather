@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cameraHandler"
-            type="com.mohnage7.weather.features.camera.callback.CameraHandler" />
+            type="com.mohnage7.weather.ui.camera.callback.CameraHandler" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:background="@drawable/btn_photo"
             android:paddingStart="@dimen/dp_16"
             android:paddingEnd="@dimen/dp_16"
-            android:text="@string/generate_photo"
+            android:text="@string/new_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

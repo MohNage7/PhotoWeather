@@ -121,6 +121,6 @@
 
         <variable
             name="handler"
-            type="com.mohnage7.weather.features.weatherphoto.view.callback.WeatherPhotoHandler" />
+            type="com.mohnage7.weather.ui.weatherphoto.view.callback.WeatherPhotoHandler" />
     </data>
 </layout>

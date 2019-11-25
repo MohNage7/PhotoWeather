@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mohnage7.weather.features.home.view.ui.HomeFragment">
+        android:name="com.mohnage7.weather.ui.home.view.ui.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.mohnage7.weather.features.camera.view.CameraFragment">
+        android:name="com.mohnage7.weather.ui.camera.view.CameraFragment">
         <action
             android:id="@+id/action_cameraFragment_to_weatherFragment"
             app:destination="@id/weatherFragment"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="com.mohnage7.weather.features.weatherphoto.view.ui.WeatherPhotoFragment">
+        android:name="com.mohnage7.weather.ui.weatherphoto.view.ui.WeatherPhotoFragment">
         <action
             android:id="@+id/action_weatherFragment_to_shareFragment"
             app:destination="@id/shareFragment"
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/shareFragment"
-        android:name="com.mohnage7.weather.features.share.ui.ShareFragment">
+        android:name="com.mohnage7.weather.ui.share.ui.ShareFragment">
         <action
             android:id="@+id/action_shareFragment_to_homeFragment"
             app:destination="@id/homeFragment"

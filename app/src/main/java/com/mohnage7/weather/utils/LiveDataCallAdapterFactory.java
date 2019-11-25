@@ -3,7 +3,7 @@ package com.mohnage7.weather.utils;
 
 import androidx.lifecycle.LiveData;
 
-import com.mohnage7.weather.network.ApiResponse;
+import com.mohnage7.weather.data.network.ApiResponse;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;

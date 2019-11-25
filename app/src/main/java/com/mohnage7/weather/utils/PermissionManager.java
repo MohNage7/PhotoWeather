@@ -42,9 +42,12 @@ public class PermissionManager {
     public @interface PermissionName {
     }
 
+    private PermissionManager() {
+    }
+
     private static AlertDialog permissionDialog;
 
-    public static boolean checkForPermission(@NonNull Fragment fragment,@PermissionName String permission,@RequestCode int requestCode) {
+    public static void checkForPermission(@NonNull Fragment fragment, @PermissionName String permission, @RequestCode int requestCode) {
         ArrayList<String> permissionsNeeded = new ArrayList<>();
         if (ActivityCompat.checkSelfPermission(fragment.getActivity(), permission)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -52,9 +55,7 @@ public class PermissionManager {
         }
         if (!permissionsNeeded.isEmpty()) {
             requestPermission(fragment, permissionsNeeded.toArray(new String[0]), requestCode);
-            return false;
         }
-        return true;
     }
 
     public static boolean isPermissionGranted(@NonNull Fragment fragment,@PermissionName String permission) {
@@ -73,9 +74,9 @@ public class PermissionManager {
         return isAllPermissionsGranted;
     }
 
-    public static boolean checkForPermissions(@NonNull Fragment fragment, String[] permissions) {
+    public static void checkForPermissions(@NonNull Fragment fragment, String[] permissions) {
         ArrayList<String> permissionsNeeded = new ArrayList<>();
-        for (String permission : permissions){
+        for (String permission : permissions) {
             if (ActivityCompat.checkSelfPermission(fragment.getActivity(), permission)
                     != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(permission);
@@ -83,9 +84,7 @@ public class PermissionManager {
         }
         if (!permissionsNeeded.isEmpty()) {
             requestPermission(fragment, permissionsNeeded.toArray(new String[permissionsNeeded.size()]), MULTIPLE_PERMISSION_REQUEST_CODE);
-            return false;
         }
-        return true;
     }
 
     private static void requestPermission(Fragment fragment , String[] permissions ,@RequestCode int requestCode) {
