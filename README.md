@@ -21,6 +21,13 @@ A Weather application based on openweathermap-api that let the users take a phot
 * Set retrieved data in views and then convert all the ViewGroup to image.
 * Share the generated image accross applications.
 
+### App Architecture 
+The following diagram shows how all the modules will interact with one another.
+
+<img src="https://github.com/MohNage7/PhotoWeather/blob/master/art/photo_weather_diagram.png"  width=600 height=524  />
+
+Each component depends only on the component one level below it. For example, activities and fragments depend only on a view model. 
+The repository is the only class that depends on multiple other classes; on a persistent data model and a remote backend data source.
 
 ## NetworkBoundResource
 A helper class that is used to take the decision of loading the data from the local db or from remote service.
